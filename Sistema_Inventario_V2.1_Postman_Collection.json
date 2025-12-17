@@ -1,0 +1,612 @@
+{
+	"info": {
+		"_postman_id": "sistema-inventario-v2-1",
+		"name": "Sistema Inventario V2.1 - API Collection",
+		"description": "Colección completa de endpoints para el Sistema de Gestión de Inventario y Órdenes de Compra - Versión 2.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "producto_port",
+			"value": "8081",
+			"type": "string"
+		},
+		{
+			"key": "proveedor_port",
+			"value": "8082",
+			"type": "string"
+		},
+		{
+			"key": "inventario_port",
+			"value": "8083",
+			"type": "string"
+		},
+		{
+			"key": "orden_port",
+			"value": "8084",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "PRODUCTO SERVICE",
+			"item": [
+				{
+					"name": "Listar todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos"]
+						}
+					}
+				},
+				{
+					"name": "Buscar producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos/1",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"PROD001\",\n  \"nombre\": \"Laptop Dell Inspiron 15\",\n  \"descripcion\": \"Laptop con procesador i7, 16GB RAM, 512GB SSD\",\n  \"categoria\": \"ELECTRONICA\",\n  \"precio\": 850.00,\n  \"unidadMedida\": \"UNIDAD\",\n  \"stockMinimo\": 5,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"PROD001\",\n  \"nombre\": \"Laptop Dell Inspiron 15 (Actualizado)\",\n  \"descripcion\": \"Laptop con procesador i7, 16GB RAM, 1TB SSD\",\n  \"categoria\": \"ELECTRONICA\",\n  \"precio\": 950.00,\n  \"unidadMedida\": \"UNIDAD\",\n  \"stockMinimo\": 10,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos/1",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos/1",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Productos críticos (con stock mínimo)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos/reportes/criticos",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos", "reportes", "criticos"]
+						}
+					}
+				},
+				{
+					"name": "Productos bajo stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{producto_port}}/api/productos/reportes/bajo-stock",
+							"host": ["{{base_url}}"],
+							"port": "{{producto_port}}",
+							"path": ["api", "productos", "reportes", "bajo-stock"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "PROVEEDOR SERVICE",
+			"item": [
+				{
+					"name": "Listar todos los proveedores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores"]
+						}
+					}
+				},
+				{
+					"name": "Buscar proveedor por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores/1",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear proveedor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"1234567890001\",\n  \"razonSocial\": \"TechMax Distribuidora S.A.\",\n  \"nombreComercial\": \"TechMax\",\n  \"direccion\": \"Av. Amazonas N34-451\",\n  \"ciudad\": \"Quito\",\n  \"pais\": \"Ecuador\",\n  \"telefono\": \"+593 2 2456789\",\n  \"email\": \"ventas@techmax.com\",\n  \"sitioWeb\": \"www.techmax.com\",\n  \"categoria\": \"TECNOLOGIA\",\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar proveedor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"1234567890001\",\n  \"razonSocial\": \"TechMax Distribuidora S.A.\",\n  \"nombreComercial\": \"TechMax Ecuador\",\n  \"direccion\": \"Av. Amazonas N34-451 y Atahualpa\",\n  \"ciudad\": \"Quito\",\n  \"pais\": \"Ecuador\",\n  \"telefono\": \"+593 2 2456789\",\n  \"email\": \"ventas@techmax.com.ec\",\n  \"sitioWeb\": \"www.techmax.com.ec\",\n  \"categoria\": \"TECNOLOGIA\",\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores/1",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar proveedor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores/1",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores", "1"]
+						}
+					}
+				},
+				{
+					"name": "Buscar proveedor por RUC",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores/ruc/1234567890001",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores", "ruc", "1234567890001"]
+						}
+					}
+				},
+				{
+					"name": "Filtrar proveedores por país",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{proveedor_port}}/api/proveedores/pais/Ecuador",
+							"host": ["{{base_url}}"],
+							"port": "{{proveedor_port}}",
+							"path": ["api", "proveedores", "pais", "Ecuador"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "INVENTARIO SERVICE",
+			"item": [
+				{
+					"name": "BODEGAS",
+					"item": [
+						{
+							"name": "Listar todas las bodegas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas"]
+								}
+							}
+						},
+						{
+							"name": "Buscar bodega por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas/1",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas", "1"]
+								}
+							}
+						},
+						{
+							"name": "Crear bodega",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"codigo\": \"BOD-001\",\n  \"nombre\": \"Bodega Central\",\n  \"direccion\": \"Av. Industrial km 5\",\n  \"ciudad\": \"Quito\",\n  \"telefono\": \"+593 2 3456789\",\n  \"capacidadMaxima\": 100,\n  \"unidadCapacidad\": \"m²\",\n  \"estado\": \"ACTIVO\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas"]
+								}
+							}
+						},
+						{
+							"name": "Actualizar bodega",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"codigo\": \"BOD-001\",\n  \"nombre\": \"Bodega Central - Ampliada\",\n  \"direccion\": \"Av. Industrial km 5\",\n  \"ciudad\": \"Quito\",\n  \"telefono\": \"+593 2 3456789\",\n  \"capacidadMaxima\": 150,\n  \"unidadCapacidad\": \"m²\",\n  \"estado\": \"ACTIVO\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas/1",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas", "1"]
+								}
+							}
+						},
+						{
+							"name": "Eliminar bodega",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas/1",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas", "1"]
+								}
+							}
+						},
+						{
+							"name": "Obtener capacidad de todas las bodegas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas/capacidad",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas", "capacidad"]
+								}
+							}
+						},
+						{
+							"name": "Obtener capacidad de una bodega",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/bodegas/1/capacidad",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "bodegas", "1", "capacidad"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "INVENTARIO",
+					"item": [
+						{
+							"name": "Consultar todo el inventario",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/inventario",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "inventario"]
+								}
+							}
+						},
+						{
+							"name": "Stock de un producto en todas las bodegas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/inventario/producto/1",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "inventario", "producto", "1"]
+								}
+							}
+						},
+						{
+							"name": "Agregar stock a inventario",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"productoId\": 1,\n  \"bodegaId\": 1,\n  \"cantidad\": 50\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/inventario/agregar-stock",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "inventario", "agregar-stock"]
+								}
+							}
+						},
+						{
+							"name": "Actualizar inventario (cambiar ubicación)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"productoId\": 1,\n  \"bodegaId\": 1,\n  \"ubicacion\": \"ESTANTE-A-01\",\n  \"cantidadDisponible\": 50\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{inventario_port}}/api/inventario/1",
+									"host": ["{{base_url}}"],
+									"port": "{{inventario_port}}",
+									"path": ["api", "inventario", "1"]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ORDEN COMPRA SERVICE",
+			"item": [
+				{
+					"name": "Listar todas las órdenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra"]
+						}
+					}
+				},
+				{
+					"name": "Buscar orden por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/1",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear orden de compra",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"proveedorId\": 1,\n  \"bodegaId\": 1,\n  \"observaciones\": \"Orden de compra trimestral\",\n  \"detalles\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 10,\n      \"precioUnitario\": 850.00\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar orden de compra (solo PENDIENTE)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"proveedorId\": 1,\n  \"bodegaId\": 1,\n  \"observaciones\": \"Orden de compra trimestral - Actualizada\",\n  \"detalles\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 5,\n      \"precioUnitario\": 850.00\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/1",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "1"]
+						}
+					}
+				},
+				{
+					"name": "Aprobar orden (con validación de capacidad)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/1/aprobar",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "1", "aprobar"]
+						}
+					}
+				},
+				{
+					"name": "Recibir orden (actualiza inventario)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/1/recibir",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "1", "recibir"]
+						}
+					}
+				},
+				{
+					"name": "Cancelar orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/1/cancelar",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "1", "cancelar"]
+						}
+					}
+				},
+				{
+					"name": "Historial de órdenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/reportes/historial",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "reportes", "historial"]
+						}
+					}
+				},
+				{
+					"name": "Gastos por proveedor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/reportes/gastos-por-proveedor",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "reportes", "gastos-por-proveedor"]
+						}
+					}
+				},
+				{
+					"name": "Estadísticas generales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{orden_port}}/api/ordenes-compra/reportes/estadisticas",
+							"host": ["{{base_url}}"],
+							"port": "{{orden_port}}",
+							"path": ["api", "ordenes-compra", "reportes", "estadisticas"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
