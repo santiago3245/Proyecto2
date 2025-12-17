@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "inventory-system-v2-2025",
+		"name": "Sistema Inventario - API Collection V2.0",
+		"description": "Colección ACTUALIZADA de APIs para el Sistema de Gestión de Inventario y Órdenes de Compra\n\n**Microservicios:**\n- Producto Service (8081) - Gestión de productos + reportes críticos\n- Proveedor Service (8082) - Gestión de proveedores\n- Inventario Service (8083) - Control de stock + ubicaciones automáticas\n- Orden Compra Service (8084) - Órdenes con workflow completo + reportes financieros\n\n**Mejoras V2.0:**\n- Reportes de productos críticos y bajo stock\n- Historial de órdenes de compra ordenado por fecha\n- Gastos por proveedor con nombres completos\n- Estadísticas generales del sistema\n- Ubicación automática 'RECEPCION' al recibir órdenes\n- Eliminación de campo cantidadReservada (no implementado)\n\n**Versión:** 2.0\n**Fecha:** Diciembre 2025",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "PRODUCTO_SERVICE",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "PROVEEDOR_SERVICE",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "INVENTARIO_SERVICE",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "ORDEN_COMPRA_SERVICE",
+			"value": "http://localhost:8084",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. PRODUCTOS",
+			"description": "Gestión completa del catálogo de productos + reportes",
+			"item": [
+				{
+					"name": "GET - Listar todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos"]
+						}
+					}
+				},
+				{
+					"name": "GET - Producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/1",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "POST - Crear producto",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"PROD001\",\n  \"nombre\": \"Laptop HP Pavilion\",\n  \"descripcion\": \"Laptop empresarial\",\n  \"categoria\": \"ELECTRONICA\",\n  \"precio\": 899.99,\n  \"unidadMedida\": \"UNIDAD\",\n  \"stockMinimo\": 5,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos"]
+						}
+					}
+				},
+				{
+					"name": "PUT - Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"PROD001\",\n  \"nombre\": \"Laptop HP Pavilion 15\",\n  \"descripcion\": \"Laptop empresarial actualizada\",\n  \"categoria\": \"ELECTRONICA\",\n  \"precio\": 949.99,\n  \"unidadMedida\": \"UNIDAD\",\n  \"stockMinimo\": 10,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/1",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "DELETE - Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/1",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET - Buscar por código",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/codigo/PROD001",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "codigo", "PROD001"]
+						}
+					}
+				},
+				{
+					"name": "GET - Buscar por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/buscar?nombre=Laptop",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "buscar"],
+							"query": [{"key": "nombre", "value": "Laptop"}]
+						}
+					}
+				},
+				{
+					"name": "GET - REPORTE Productos Críticos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/reportes/criticos",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "reportes", "criticos"]
+						},
+						"description": "Lista productos con stock mínimo definido para cruzar con inventario real"
+					}
+				},
+				{
+					"name": "GET - REPORTE Productos Bajo Stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCTO_SERVICE}}/api/productos/reportes/bajo-stock",
+							"host": ["{{PRODUCTO_SERVICE}}"],
+							"path": ["api", "productos", "reportes", "bajo-stock"]
+						},
+						"description": "Alias de productos críticos"
+					}
+				}
+			]
+		},
+		{
+			"name": "2. PROVEEDORES",
+			"description": "Gestión de proveedores nacionales e internacionales",
+			"item": [
+				{
+					"name": "GET - Listar proveedores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROVEEDOR_SERVICE}}/api/proveedores",
+							"host": ["{{PROVEEDOR_SERVICE}}"],
+							"path": ["api", "proveedores"]
+						}
+					}
+				},
+				{
+					"name": "POST - Crear proveedor",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"1792345678001\",\n  \"razonSocial\": \"TechMax Distribuidora S.A.\",\n  \"nombreComercial\": \"TechMax\",\n  \"direccion\": \"Av. Amazonas N24-123\",\n  \"ciudad\": \"Quito\",\n  \"pais\": \"Ecuador\",\n  \"telefono\": \"+593-2-2345678\",\n  \"email\": \"ventas@techmax.com\",\n  \"sitioWeb\": \"www.techmax.com\",\n  \"categoria\": \"TECNOLOGIA\",\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{PROVEEDOR_SERVICE}}/api/proveedores",
+							"host": ["{{PROVEEDOR_SERVICE}}"],
+							"path": ["api", "proveedores"]
+						}
+					}
+				},
+				{
+					"name": "PUT - Actualizar proveedor",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"1792345678001\",\n  \"razonSocial\": \"TechMax Distribuidora S.A.\",\n  \"nombreComercial\": \"TechMax Ecuador\",\n  \"direccion\": \"Av. Amazonas N24-123 y Colon\",\n  \"ciudad\": \"Quito\",\n  \"pais\": \"Ecuador\",\n  \"telefono\": \"+593-2-2345678\",\n  \"email\": \"ventas@techmax.com.ec\",\n  \"sitioWeb\": \"www.techmax.com.ec\",\n  \"categoria\": \"TECNOLOGIA\",\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{PROVEEDOR_SERVICE}}/api/proveedores/1",
+							"host": ["{{PROVEEDOR_SERVICE}}"],
+							"path": ["api", "proveedores", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET - Buscar por RUC",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROVEEDOR_SERVICE}}/api/proveedores/ruc/1792345678001",
+							"host": ["{{PROVEEDOR_SERVICE}}"],
+							"path": ["api", "proveedores", "ruc", "1792345678001"]
+						}
+					}
+				},
+				{
+					"name": "GET - Filtrar por país",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROVEEDOR_SERVICE}}/api/proveedores/pais/Ecuador",
+							"host": ["{{PROVEEDOR_SERVICE}}"],
+							"path": ["api", "proveedores", "pais", "Ecuador"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. BODEGAS",
+			"description": "Gestión de centros de almacenamiento",
+			"item": [
+				{
+					"name": "GET - Listar bodegas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/bodegas",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "bodegas"]
+						}
+					}
+				},
+				{
+					"name": "POST - Crear bodega",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"BOD001\",\n  \"nombre\": \"Bodega Principal Quito\",\n  \"direccion\": \"Parque Industrial Itulcachi\",\n  \"ciudad\": \"Quito\",\n  \"telefono\": \"+593-2-3456789\",\n  \"capacidadMaxima\": 10000.00,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/bodegas",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "bodegas"]
+						}
+					}
+				},
+				{
+					"name": "PUT - Actualizar bodega",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"codigo\": \"BOD001\",\n  \"nombre\": \"Bodega Principal Quito Norte\",\n  \"direccion\": \"Parque Industrial Itulcachi Lote 5\",\n  \"ciudad\": \"Quito\",\n  \"telefono\": \"+593-2-3456789\",\n  \"capacidadMaxima\": 15000.00,\n  \"estado\": \"ACTIVO\"\n}"
+						},
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/bodegas/1",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "bodegas", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. INVENTARIO",
+			"description": "Control de stock distribuido - Ubicación RECEPCION automática al recibir órdenes",
+			"item": [
+				{
+					"name": "GET - Consultar todo el inventario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/inventario",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "inventario"]
+						},
+						"description": "Muestra stock disponible por producto/bodega con ubicación"
+					}
+				},
+				{
+					"name": "GET - Stock de un producto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/inventario/producto/1",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "inventario", "producto", "1"]
+						},
+						"description": "Stock del producto en todas las bodegas"
+					}
+				},
+				{
+					"name": "POST - Agregar stock manualmente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/inventario/agregar-stock?productoId=1&bodegaId=1&cantidad=50",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "inventario", "agregar-stock"],
+							"query": [
+								{"key": "productoId", "value": "1"},
+								{"key": "bodegaId", "value": "1"},
+								{"key": "cantidad", "value": "50"}
+							]
+						},
+						"description": "Crea inventario con ubicación RECEPCION si no existe"
+					}
+				},
+				{
+					"name": "POST - Retirar stock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/inventario/retirar-stock?productoId=1&bodegaId=1&cantidad=10",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "inventario", "retirar-stock"],
+							"query": [
+								{"key": "productoId", "value": "1"},
+								{"key": "bodegaId", "value": "1"},
+								{"key": "cantidad", "value": "10"}
+							]
+						}
+					}
+				},
+				{
+					"name": "PUT - Actualizar ubicación en bodega",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productoId\": 1,\n  \"bodegaId\": 1,\n  \"ubicacion\": \"ESTANTE-A-05\",\n  \"cantidadDisponible\": 100,\n  \"cantidadReservada\": 0\n}"
+						},
+						"url": {
+							"raw": "{{INVENTARIO_SERVICE}}/api/inventario/1",
+							"host": ["{{INVENTARIO_SERVICE}}"],
+							"path": ["api", "inventario", "1"]
+						},
+						"description": "Cambiar ubicación de RECEPCION a posición específica"
+					}
+				}
+			]
+		},
+		{
+			"name": "5. ORDENES DE COMPRA",
+			"description": "Workflow completo: PENDIENTE → APROBADA → RECIBIDA + Reportes financieros",
+			"item": [
+				{
+					"name": "GET - Listar órdenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra"]
+						}
+					}
+				},
+				{
+					"name": "POST - Crear orden (PENDIENTE)",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numeroOrden\": \"OC-2025-001\",\n  \"proveedorId\": 1,\n  \"bodegaId\": 1,\n  \"observaciones\": \"Pedido urgente\",\n  \"detalles\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 20,\n      \"precioUnitario\": 899.99\n    },\n    {\n      \"productoId\": 2,\n      \"cantidad\": 10,\n      \"precioUnitario\": 45.50\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra"]
+						},
+						"description": "Crea orden en estado PENDIENTE, calcula total automático"
+					}
+				},
+				{
+					"name": "PUT - Aprobar orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/1/aprobar",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "1", "aprobar"]
+						},
+						"description": "Cambia estado a APROBADA"
+					}
+				},
+				{
+					"name": "PUT - Recibir orden (actualiza inventario)",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "[]"
+						},
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/1/recibir",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "1", "recibir"]
+						},
+						"description": "Cambia a RECIBIDA y agrega stock automáticamente con ubicación RECEPCION"
+					}
+				},
+				{
+					"name": "PUT - Cancelar orden",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"motivo\": \"Proveedor no puede cumplir con la entrega\"\n}"
+						},
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/1/cancelar",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "1", "cancelar"]
+						}
+					}
+				},
+				{
+					"name": "GET - REPORTE Historial de órdenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/reportes/historial",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "reportes", "historial"]
+						},
+						"description": "Órdenes ordenadas por fechaOrden descendente"
+					}
+				},
+				{
+					"name": "GET - REPORTE Gastos por proveedor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/reportes/gastos-por-proveedor",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "reportes", "gastos-por-proveedor"]
+						},
+						"description": "Retorna: proveedorId, proveedorNombre (razón social), totalGastado, cantidadOrdenes"
+					}
+				},
+				{
+					"name": "GET - REPORTE Estadísticas generales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ORDEN_COMPRA_SERVICE}}/api/ordenes-compra/reportes/estadisticas",
+							"host": ["{{ORDEN_COMPRA_SERVICE}}"],
+							"path": ["api", "ordenes-compra", "reportes", "estadisticas"]
+						},
+						"description": "Total órdenes, por estado, total gastado"
+					}
+				}
+			]
+		}
+	]
+}
